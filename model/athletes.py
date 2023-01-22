@@ -78,6 +78,15 @@ class Athlete(db.Model):
         }
         return dict
 
+    def initAthletes():
+        db.create_all()
+        """Tester data for table"""
+        Liav = Athlete(130, 180, 260, 65, 36)
+        Noor = Athlete(190, 240, 380, 95, 48)
+
+        Athletes = [Liav, Noor,]
+
+
     def __str__(self):
         return json.dumps(self.dictionary)
     

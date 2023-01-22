@@ -3,8 +3,15 @@ from flask_restful import Api, Resource, reqparse
 from .. import db
 from ..model.athletes import Athlete
 
-athlete_bp = Blueprint("Athletes", __name__)
-athlete_api = Api(athlete_bp)
+from model.athletes import Athlete
+
+athlete_api = Blueprint('athlete_api', __name__,
+                   url_prefix='/api/athlete')
+
+api = Api(athlete_api)
+
+athlete_bp = Blueprint("athlete", __name__)
+athlete_api = api(athlete_bp)
 
 class AthleteAPI(Resource):
     def get(self, Weight, Bench, Squat, Press, Pushup):
