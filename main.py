@@ -1,5 +1,4 @@
 import threading
-from api import app, db
 from api.athlete import athlete_bp 
 
 # import "packages" from flask
