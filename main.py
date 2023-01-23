@@ -45,7 +45,7 @@ def activate_job():
     initJokes()
     initUsers()
     initAthletes()
-    initEtrackUsers()
+    # initEtrackUsers()
     
 
 # this runs the application on the development server
