@@ -9,7 +9,7 @@ from __init__ import app  # Definitions initialization
 from model.jokes import initJokes
 from model.users import initUsers
 from model.athletes import initAthletes
-from model.etrack_users import initEtrackUsers
+from model.sport import initSports
 
 # setup APIs
 from api.covid import covid_api # Blueprint import api definition
