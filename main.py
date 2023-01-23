@@ -9,6 +9,7 @@ from __init__ import app  # Definitions initialization
 from model.jokes import initJokes
 from model.users import initUsers
 from model.athletes import initAthletes
+from model.etrack_users import initEtrackUsers
 
 # setup APIs
 from api.covid import covid_api # Blueprint import api definition
@@ -44,6 +45,7 @@ def activate_job():
     initJokes()
     initUsers()
     initAthletes()
+    initEtrackUsers()
     
 
 # this runs the application on the development server
