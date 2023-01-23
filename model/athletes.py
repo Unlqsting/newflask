@@ -140,7 +140,6 @@ def initAthletes():
     Liav = Athlete(130, 180, 260, 65, 36)
     Noor = Athlete(190, 240, 380, 95, 48)
     Mort = Athlete(240, 290, 480, 120, 58)
-    
 
 
     Athletes = [Liav, Noor, Mort]
