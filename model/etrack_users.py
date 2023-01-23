@@ -6,14 +6,12 @@ import json
 from __init__ import app, db
 from sqlalchemy.exc import IntegrityError
 
-class User(db.Model):
-    __tablename__ = 'users'  # table name is plural, class name is singular
-
+class etrack_user(db.Model):
+    __tablename__ = 'etrack_users'  # table name is plural, class name is singular
     # Define the User schema with "vars" from object
-    _name = db.Column(db.String(255), unique=False, nullable=False)
+    _uname = db.Column(db.String(255), primary_key=True)
     _pwHash = db.Column(db.String(255), unique=False, nullable=False)
 
-class User:
     def __init__(self, uname, pwHash):
         self._uname = uname
         self._pwHash = pwHash
@@ -90,8 +88,8 @@ def initEtrackUsers():
     """Create database and tables"""
     db.create_all()
     """Tester data for table"""
-    u1 = User(uname="Albert" , pwHash = "sha512$b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86")
-    u2 = User(uname="Bob" , pwHash = "sha512$b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86")
+    u1 = etrack_user(uname="Albert" , pwHash = "sha512$b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86")
+    u2 = etrack_user(uname="Bob" , pwHash = "sha512$b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86")
 
     users = [u1, u2]
 
