@@ -1,5 +1,5 @@
 import threading
-from api.athlete import athlete_bp 
+from api.athlete import athlete_api 
 
 # import "packages" from flask
 from flask import render_template  # import render_template from "public" flask libraries
@@ -25,7 +25,7 @@ app.register_blueprint(joke_api) # register api routes
 app.register_blueprint(covid_api) # register api routes
 app.register_blueprint(user_api) # register api routes
 app.register_blueprint(app_projects) # register app pages
-app.register_blueprint(athlete_bp)
+app.register_blueprint(athlete_api)
 
 @app.errorhandler(404)  # catch for URL not found
 def page_not_found(e):
