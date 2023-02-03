@@ -1,8 +1,6 @@
-from flask import Blueprint
-from flask_restful import Api, Resource, reqparse
-from .. import db
-from ..model.athletes import Athlete
-
+from flask import Blueprint, request, jsonify
+from flask_restful import Api, Resource, reqparse # used for REST API building
+from __init__ import db
 from model.athletes import Athlete
 
 athlete_api = Blueprint('athlete_api', __name__,
@@ -10,72 +8,60 @@ athlete_api = Blueprint('athlete_api', __name__,
 
 api = Api(athlete_api)
 
-athlete_bp = Blueprint("athlete", __name__)
-athlete_api = api(athlete_bp)
-
 class AthleteAPI(Resource):
-    def get(self, Weight, Bench, Squat, Press, Pushup):
-        todo = db.session.query(Athlete).get(Weight)
-        if Athlete:
-            return Athlete.to_dict()
-        return {"message": "athlete not found"}, 404
+    class _Create(Resource):
+        def post(self):
+            ''' Read data for json body '''
+            body = request.get_json()
+            
+            Weight = body.get('Weight')
+            Bench = body.get('Bench')
+            Squat = body.get('Squat')
+            Press = body.get('Press')
+            Pushup = body.get('Pushup')
 
-    def post(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument("Bench", required=True, type=str)
-        args = parser.parse_args()
+            ''' #1: Key code block, setup USER OBJECT '''
+            uo = Athlete(Weight, Bench, Squat, Press, Pushup)
+            
+            ''' #2: Key Code block to add user to database '''
+            # create user in database
+            user = uo.create()
+            # success returns json of user
+            if user:
+                return jsonify(user.read())
+            # failure returns error
+            return {'message': f'Something went wrong (error)'}, 210
+    # resources
+   # class _Create(Resource):
+    #    def post(self):
+     #       parser = reqparse.RequestParser()
+      #      parser.add_argument("Weight", required=False, type=int)
+       #     parser.add_argument("Bench", required=False, type=int)
+        #    parser.add_argument("Squat", required=False, type=int)
+         #   parser.add_argument("Press", required=False, type=int)
+          #  parser.add_argument("Pushup", required=False, type=int)
+           # args = parser.parse_args()
 
-        Athlete = Athlete(args["Bench"])
-        try:
-            db.session.add(Athlete)
-            db.session.commit()
-            return Athlete.to_dict(), 201
-        except Exception as e:
-            db.session.rollback()
-            return {"message": f"server error: {e}"}, 500
+            #athlete = Athlete(args["Weight"], args["Bench"], args["Squat"], args["Press"], args["Pushup"])
+            #try:
+             #   db.session.add(athlete)
+              #  db.session.commit()
+               # return athlete.to_dict(), 201
+            #except Exception as e:
+             #   db.session.rollback()
+              #  return {"message": f"server error: {e}"}, 500
 
-    def put(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument("Weight", required=True, type=int)
-        args = parser.parse_args()
-
-        try:
-            todo = db.session.query(Athlete).get(args["Weight"])
-            if Athlete:
-                self._Bench = True
-                db.session.commit()
-            else:
-                return {"message": "todo not found"}, 404
-        except Exception as e:
-            db.session.rollback()
-            return {"message": f"server error: {e}"}, 500
-
-    def delete(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument("Weight", required=True, type=int)
-        args = parser.parse_args()
-
-        try:
-            Athlete = db.session.query(Athlete).get(args["Weight"])
-            if Athlete:
-                db.session.delete(Athlete)
-                db.session.commit()
-                return Athlete.to_dict()
-            else:
-                return {"message": "athlete not found"}, 404
-        except Exception as e:
-            db.session.rollback()
-            return {"message": f"server error: {e}"}, 500
+    class _Read(Resource):
+        def get(self):
+            athletes = Athlete.query.all()    # read/extract all users from database
+            json_ready = [ath.read() for ath in athletes]  # prepare output in json
+            return jsonify(json_ready)  # jsonify creates Flask response object, more specific to APIs than json.dumps
 
 
-class athleteListAPI(Resource):
-    def get(self):
-        Athletes = db.session.query(Athlete).all()
-        return [Athlete.to_dict() for Athlete in Athletes]
 
 
-athlete_api.add_resource(AthleteAPI, "/athlete")
-athlete_api.add_resource(athleteListAPI, "/athleteList")
+    api.add_resource(_Read, "/")
+    api.add_resource(_Create, "/create")
 
 
 
