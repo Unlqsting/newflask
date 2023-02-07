@@ -15,7 +15,7 @@ class Athlete(db.Model):
     _Mile = db.Column(db.Integer, nullable=False)
    
     def __init__(self, Age, Weight, Bench, Squat, Pullup, Mile):
-        self._Aget = Age
+        self._Age = Age
         self._Weight = Weight
         self._Bench = Bench
         self._Squat = Squat
