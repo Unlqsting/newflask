@@ -6,7 +6,7 @@ from sqlalchemy.exc import IntegrityError
 class Athlete(db.Model):
     __tablename__= "Elite"
    
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, unique = True)
     _Age = db.Column(db.Integer, nullable=False)
     _Weight = db.Column(db.Integer, nullable=False)
     _Bench = db.Column(db.Integer, nullable=False)
