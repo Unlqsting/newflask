@@ -14,14 +14,15 @@ class AthleteAPI(Resource):
             ''' Read data for json body '''
             body = request.get_json()
             
+            Age = body.get('Age')
             Weight = body.get('Weight')
             Bench = body.get('Bench')
             Squat = body.get('Squat')
-            Press = body.get('Press')
-            Pushup = body.get('Pushup')
+            Pullup= body.get('Pullup')
+            Mile = body.get('Mile')
 
             ''' #1: Key code block, setup USER OBJECT '''
-            uo = Athlete(Weight, Bench, Squat, Press, Pushup)
+            uo = Athlete(Age, Weight, Bench, Squat, Pullup, Mile)
             
             ''' #2: Key Code block to add user to database '''
             # create user in database

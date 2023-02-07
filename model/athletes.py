@@ -7,29 +7,36 @@ class Athlete(db.Model):
     __tablename__= "Elite"
    
     id = db.Column(db.Integer, primary_key=True)
+    _Age = db.Column(db.Integer, nullable=False)
     _Weight = db.Column(db.Integer, nullable=False)
     _Bench = db.Column(db.Integer, nullable=False)
     _Squat = db.Column(db.Integer, nullable=False)
-    _Press = db.Column(db.Integer, nullable=False)
-    _Pushup = db.Column(db.Integer, nullable=False)
+    _Pullup = db.Column(db.Integer, nullable=False)
+    _Mile = db.Column(db.Integer, nullable=False)
    
-    def __init__(self, Weight, Bench, Squat, Press, Pushup):
+    def __init__(self, Age, Weight, Bench, Squat, Pullup, Mile):
+        self._Aget = Age
         self._Weight = Weight
-        self._Bench = Weight + (50)
-        self._Squat = Weight *(2)
-        self._Press = Weight /(2)
-        self._Pushup = Bench /(5)
+        self._Bench = Bench
+        self._Squat = Squat
+        self._Pullup = Pullup
+        self._Mile = Mile
 
     def __repr__(self):
-        return "<Athlete(Weight='%s', Bench='%s', Squat='%s', Press='%s', Pushup='%s')>" % (
+        return "<Athlete(Age='%s', Weight='%s', Bench='%s', Squat='%s', Pullup='%s', Mile='%s')>" % (
+            self._Age,
             self._Weight,
             self._Bench,
             self._Squat,
-            self._Press,
-            self._Pushup
+            self._Pullup,
+            self._Mile
         )
     
     # Getters:
+    @property
+    def Age(self):
+        return self._Age
+    
     @property
     def Weight(self):
         return self._Weight
@@ -43,14 +50,18 @@ class Athlete(db.Model):
         return self._Squat   
 
     @property
-    def Press(self):
-        return self._Press 
+    def Pullup(self):
+        return self._Pullup 
     
     @property
-    def Pushup(self):
-        return self._Pushup 
+    def Mile(self):
+        return self._Mile 
    
     # Setters    
+    @Age.setter
+    def Age(self, age):
+        self._Age = age
+
     @Weight.setter
     def Weight(self,weight):
         self._Weight = weight
@@ -63,22 +74,23 @@ class Athlete(db.Model):
     def Squat(self, squat):
         self._Squat = squat
 
-    @Press.setter
-    def Press(self, press):
-        self._Press = press
+    @Pullup.setter
+    def Pullup(self, pullup):
+        self._Press = pullup
 
-    @Pushup.setter
-    def Pushup(self, pushup):
-        self.Pushup = pushup
+    @Mile.setter
+    def Mile(self, mile):
+        self.Mile = mile
 
     @property
     def dictionary(self):
         dict = {
+            "Age" : self.Age,
             "Weight" : self.Weight,
             "Bench" : self.Bench,
             "Squat" : self.Squat,
-            "Press" : self.Press,
-            "Pushup" : self.Pushup,
+            "Pullup" : self.Pullup,
+            "Mile" : self.Mile,
         }
         return dict
 
@@ -86,7 +98,7 @@ class Athlete(db.Model):
         return json.dumps(self.dictionary)
     
     def __repr__(self):
-        return f'Athlete(Weight={self._Weight}, Bench={self._Bench}, Squat={self._Squat}, Press={self._Press}, Pushup={self._Pushup})'
+        return f'Athlete(Age={self._Age}, Weight={self._Weight}, Bench={self._Bench}, Squat={self._Squat}, Pullup={self._Pullup}, Mile={self._Mile})'
 
     def create(self):
         try:
@@ -102,27 +114,30 @@ class Athlete(db.Model):
 
     def read(self):
         return {
+            "Age" : self.Age,
             "Weight" : self.Weight,
             "Bench" : self.Bench,
             "Squat" : self.Squat,
-            "Press" : self.Press,
-            "Pushup" : self.Pushup,
+            "Pullup" : self.Pullup,
+            "Mile" : self.Mile
         }
 
     # CRUD update: updates user name, password, phone
     # returns self
-    def update(self, Weight="", Bench="", Squat="", Press="", Pushup=""):
+    def update(self, Age="", Weight="", Bench="", Squat="", Pullup="", Mile=""):
         """only updates values with length"""
+        if len(Age) > 0:
+            self.Age = Age
         if len(Weight) > 0:
-            self.name = Weight
+            self.Weight = Weight
         if len(Bench) > 0:
-            self.uid = Bench
+            self.Bench = Bench
         if len(Squat) > 0:
-            self.set_password(Squat)
-        if len(Press) > 0:
-            self.set_password(Press)
-        if len(Squat) > 0:
-            self.set_password(Squat)
+            self.Squat(Squat)
+        if len(Pullup) > 0:
+            self.Pullup(Pullup)
+        if len(Mile) > 0:
+            self.Mile(Mile)
         db.session.commit()
         return self
 
@@ -137,12 +152,11 @@ class Athlete(db.Model):
 def initAthletes():
     db.create_all()
     """Tester data for table"""
-    Liav = Athlete(130, 180, 260, 65, 36)
-    Noor = Athlete(190, 240, 380, 95, 48)
-    Mort = Athlete(240, 290, 480, 120, 58)
+    Liav = Athlete(16, 130, 180, 260, 12, 6.42)
+    Noor = Athlete(17, 190, 240, 380, 15, 7.35)
 
 
-    Athletes = [Liav, Noor, Mort]
+    Athletes = [Liav, Noor]
 
     for athlete in Athletes:
         try:
