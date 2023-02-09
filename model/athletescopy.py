@@ -4,9 +4,9 @@ from __init__ import app, db
 from sqlalchemy.exc import IntegrityError
 
 class Athlete(db.Model):
-    __tablename__= "Elite"
+    __tablename__= "Ath"
    
-    id = db.Column(db.Integer, primary_key=True, unique = True)
+    id = db.Column(db.Integer, primary_key=True)
     _Age = db.Column(db.Integer, nullable=False)
     _Weight = db.Column(db.Integer, nullable=False)
     _Bench = db.Column(db.Integer, nullable=False)
@@ -122,7 +122,7 @@ class Athlete(db.Model):
             "Mile" : self.Mile
         }
 
-    # CRUD update: updates user name, password, phone
+    # CRUD update:
     # returns self
     def update(self, Age="", Weight="", Bench="", Squat="", Pullup="", Mile=""):
         """only updates values with length"""
@@ -149,7 +149,7 @@ class Athlete(db.Model):
         return None
 
 
-def initAthletes():
+def initAthletescopy():
     db.create_all()
     """Tester data for table"""
     Liav = Athlete(16, 130, 180, 260, 12, 6.42)

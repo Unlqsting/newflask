@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_restful import Api, Resource, reqparse # used for REST API building
 from __init__ import db
-from model.athletes import Athlete
+from model.athletescopy import Athlete
 
 athlete_api = Blueprint('athlete_api', __name__,
                    url_prefix='/api/athlete')
