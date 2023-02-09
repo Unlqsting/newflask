@@ -11,6 +11,7 @@ from model.users import initUsers
 from model.athletes import initAthletes
 from model.sport import initSports
 from model.signups import initSignups
+from model.etrack_users import initEtrackUsers
 
 # setup APIs
 from api.covid import covid_api # Blueprint import api definition
@@ -18,6 +19,7 @@ from api.joke import joke_api # Blueprint import api definition
 from api.user import user_api # Blueprint import api definition
 from api.athlete import athlete_api
 from api.signup import signup_api
+from api.etrack_user import etrack_user_api
 # setup App pages
 from projects.projects import app_projects # Blueprint directory import projects definition
 
@@ -28,6 +30,7 @@ app.register_blueprint(user_api) # register api routes
 app.register_blueprint(app_projects) # register app pages
 app.register_blueprint(athlete_api)
 app.register_blueprint(signup_api)
+app.register_blueprint(etrack_user_api)
 
 @app.errorhandler(404)  # catch for URL not found
 def page_not_found(e):
@@ -40,7 +43,7 @@ def index():
 
 @app.route('/stub/')  # connects /stub/ URL to stub() function
 def stub():
-    return render_template("stub.html")
+    return render_template("stub.html")   
 
 @app.before_first_request
 def activate_job():
@@ -48,11 +51,17 @@ def activate_job():
     initUsers()
     initAthletes()
     initSignups()
-    # initEtrackUsers()
+    initEtrackUsers()
     
+@app.after_request
+def after_request(response):
+  response.headers.add('Access-Control-Allow-Origin', '*')
+  response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+  response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS,PATCH')
+  return response
 
 # this runs the application on the development server
 if __name__ == "__main__":
     # change name for testing
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sqlite.db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///volumes/sqlite.db'
     app.run(debug=True, host="0.0.0.0", port="8086")
