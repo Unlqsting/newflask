@@ -3,8 +3,10 @@ from flask_restful import Api, Resource # used for REST API building
 from datetime import datetime
 
 from model.etrack_users import etrack_user
+import model.etrack_users
 
-etrack_user_api = Blueprint('user_api', __name__,
+
+etrack_user_api = Blueprint('etrack_user_api', __name__,
                    url_prefix='/api/etrack_users')
 
 # API docs https://flask-restful.readthedocs.io/en/latest/api.html
@@ -23,10 +25,10 @@ class etrack_UserAPI:
                 return {'message': f'Name is missing, or is less than 2 characters'}, 210
             # validate uid
             
-            pwHash = body.get('pwHash')
+            savedWorkouts = body.get('savedWorkouts')
         
             uo = etrack_user(uname=uname, 
-                      pwHash=pwHash)
+                      savedWorkouts=savedWorkouts)
             
 
 
@@ -37,7 +39,7 @@ class etrack_UserAPI:
             if user:
                 return jsonify(user.read())
             # failure returns error
-            return {'message': f'Processed {uname}, either a format error or User ID {pwHash} is duplicate'}, 210
+            return {'message': f'Processed {uname}, either a format error or User ID {savedWorkouts} is duplicate'}, 210
 
     class _Read(Resource):
         def get(self):
@@ -45,6 +47,28 @@ class etrack_UserAPI:
             json_ready = [user.read() for user in users]  # prepare output in json
             return jsonify(json_ready)  # jsonify creates Flask response object, more specific to APIs than json.dumps
 
+    class _Update(Resource):
+        def patch(self):
+            ''' Read data for json body '''
+            body = request.get_json()
+            
+            ''' Avoid garbage in, error checking '''
+            # validate name
+            savedWorkouts = body.get('savedWorkouts')
+            testUser = etrack_user.read(model.etrack_users.u1)
+            if savedWorkouts == testUser.get('savedWorkouts'):
+                return {'message': f'Already exists', 'Workouts':savedWorkouts}
+            else:
+                model.etrack_users.u1.update("testUser", savedWorkouts)
+                return jsonify(testUser)
+
+                
+
+
+
+
+
     # building RESTapi endpoint
     api.add_resource(_Create, '/create')
+    api.add_resource(_Update, '/update')
     api.add_resource(_Read, '/')

@@ -10,11 +10,11 @@ class etrack_user(db.Model):
     __tablename__ = 'etrack_users'  # table name is plural, class name is singular
     # Define the User schema with "vars" from object
     _uname = db.Column(db.String(255), primary_key=True)
-    _pwHash = db.Column(db.String(255), unique=False, nullable=False)
+    _savedWorkouts = db.Column(db.PickleType, unique=False, nullable=False)
 
-    def __init__(self, uname, pwHash):
+    def __init__(self, uname, savedWorkouts):
         self._uname = uname
-        self._pwHash = pwHash
+        self._savedWorkouts = savedWorkouts
 
     @property
     def uname(self):
@@ -25,18 +25,18 @@ class etrack_user(db.Model):
         self._uname = uname
 
     @property
-    def pwHash(self):
-        return self._pwHash
+    def savedWorkouts(self):
+        return self._savedWorkouts
 
-    @pwHash.setter
-    def pwHash(self, pwHash):
-        self._pwHash = pwHash
+    @savedWorkouts.setter
+    def savedWorkouts(self, savedWorkouts):
+        self._savedWorkouts = savedWorkouts
 
     @property
     def dictionary(self):
         dict = {
             "username" : self.uname,
-            "password hash" : self.pwHash,
+            "saved workouts" : self.savedWorkouts,
         }
         return dict
 
@@ -44,7 +44,7 @@ class etrack_user(db.Model):
         return json.dumps(self.dictionary)
     
     def __repr__(self):
-        return f'User(username={self._uname}, password hash={self._pwHash})'
+        return f'User(username={self._uname}, password hash={self._savedWorkouts})'
 
 
     # CRUD stuff
@@ -63,17 +63,17 @@ class etrack_user(db.Model):
     def read(self):
         return {
             "uname": self.uname,
-            "pwHash": self.pwHash,
+            "savedWorkouts": self.savedWorkouts,
         }
 
     # CRUD update: updates user name, password, phone
     # returns self
-    def update(self, uname="", pwHash=""):
+    def update(self, uname, savedWorkouts):
         """only updates values with length"""
         if len(uname) > 0:
             self.uname = uname
-        if len(pwHash) > 0:
-            self.pwHash = pwHash
+        if len(savedWorkouts) > 0:
+            self.savedWorkouts = savedWorkouts
         db.session.commit()
         return self
 
@@ -85,13 +85,11 @@ class etrack_user(db.Model):
         return None
 
 def initEtrackUsers():
-    """Create database and tables"""
     db.create_all()
-    """Tester data for table"""
-    u1 = etrack_user(uname="Albert" , pwHash = "sha512$b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86")
-    u2 = etrack_user(uname="Bob" , pwHash = "sha512$b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86")
+    global u1
+    u1 = etrack_user(uname="testUser" , savedWorkouts = {"1 February 2023 workout(s)": ["This is a test"]})
 
-    users = [u1, u2]
+    users = [u1]
 
     """Builds sample user/note(s) data"""
     for user in users:
