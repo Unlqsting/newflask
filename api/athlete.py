@@ -11,27 +11,28 @@ api = Api(athlete_api)
 class AthleteAPI(Resource):
     class _Create(Resource):
         def post(self):
-            ''' Read data for json body '''
-            body = request.get_json()
-            
-            Age = body.get('Age')
-            Weight = body.get('Weight')
-            Bench = body.get('Bench')
-            Squat = body.get('Squat')
-            Pullup= body.get('Pullup')
-            Mile = body.get('Mile')
+            try:
+                ''' Read data for json body '''
+                body = request.get_json()
+                
+                Age = body.get('Age')
+                Weight = body.get('Weight')
+                Bench = body.get('Bench')
+                Squat = body.get('Squat')
+                Pullup= body.get('Pullup')
+                Mile = body.get('Mile')
 
-            ''' #1: Key code block, setup USER OBJECT '''
-            uo = Athlete(Age, Weight, Bench, Squat, Pullup, Mile)
+                ''' #1: Key code block, setup USER OBJECT '''
+                uo = Athlete(Age, Weight, Bench, Squat, Pullup, Mile)
+                
+                ''' #2: Key Code block to add user to database '''
+                # create user in database
+                user = uo.create()
+                # success returns json of user
             
-            ''' #2: Key Code block to add user to database '''
-            # create user in database
-            user = uo.create()
-            # success returns json of user
-            if user:
                 return jsonify(user.read())
-            # failure returns error
-            return {'message': f'Something went wrong (error)'}, 210
+            except Exception as e:
+                return {'message':str(e)}
     # resources
    # class _Create(Resource):
     #    def post(self):
