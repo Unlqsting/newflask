@@ -83,16 +83,16 @@ class User(db.Model):
    
     # Setters    
     @Workout.setter
-    def Age(self, workout):
+    def Workout(self, workout):
         self._Workout = workout
 
     @Reps.setter
-    def Weight(self,reps):
-        self._Weight = reps
+    def Reps(self,reps):
+        self._Reps = reps
 
     @Sets.setter
-    def Weight(self,sets):
-        self._Weight = sets
+    def Sets(self,sets):
+        self._Sets = sets
         
     # a getter method, extracts email from object
     @property
