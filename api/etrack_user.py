@@ -60,7 +60,7 @@ class etrack_UserAPI:
                 return {'message': f'Already exists', 'Workouts':savedWorkouts}
             else:
                 model.etrack_users.u1.update("testUser", savedWorkouts)
-                return jsonify(testUser)
+                return jsonify(model.etrack_users.u1.read())
 
                 
 
