@@ -150,23 +150,25 @@ class Sign(db.Model):
 # Builds working data for testing
 def initSignups():
     """Create database and tables"""
-    db.create_all()
-    """Tester data for table"""
-    u1 = Sign(name='Noor Bijapur', uid='Unlqsting', password='noordabest123', dob=date(2006, 4, 9))
-    u2 = Sign(name='Steven', uid='SAnd353', password='stevendabest123')
-    u3 = Sign(name='Liav B', uid='liavbear', password='liavdabest123')
-    
-    
-    
+    with app.app_context():
+        db.init_app(app)
+        db.create_all()
+        """Tester data for table"""
+        u1 = Sign(name='Noor Bijapur', uid='Unlqsting', password='noordabest123', dob=date(2006, 4, 9))
+        u2 = Sign(name='Steven', uid='SAnd353', password='stevendabest123')
+        u3 = Sign(name='Liav B', uid='liavbear', password='liavdabest123')
+        
+        
+        
 
-    Signups = [u1, u2, u3 ]
+        Signups = [u1, u2, u3 ]
 
-    """Builds sample user/note(s) data"""
-    for user in Signups:
-        try:
-            
-            user.create()
-        except IntegrityError:
-            '''fails with bad or duplicate data'''
-            db.session.remove()
-            print(f"Records exist, duplicate email, or error: {user.uid}")
+        """Builds sample user/note(s) data"""
+        for user in Signups:
+            try:
+                
+                user.create()
+            except IntegrityError:
+                '''fails with bad or duplicate data'''
+                db.session.remove()
+                print(f"Records exist, duplicate email, or error: {user.uid}")

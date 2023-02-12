@@ -85,17 +85,19 @@ class etrack_user(db.Model):
         return None
 
 def initEtrackUsers():
-    db.create_all()
-    global u1
-    u1 = etrack_user(uname="testUser" , savedWorkouts = {"1 February 2023 workout(s)": ["This is a test"]})
+    with app.app_context():
+        db.init_app(app)
+        db.create_all()
+        global u1
+        u1 = etrack_user(uname="testUser" , savedWorkouts = {"1 February 2023 workout(s)": ["This is a test"]})
 
-    users = [u1]
+        users = [u1]
 
-    """Builds sample user/note(s) data"""
-    for user in users:
-        try:
-            user.create()
-        except IntegrityError:
-            '''fails with bad or duplicate data'''
-            db.session.remove()
-            print(f"Records exist, duplicate username, or error: {user.uname}")
+        """Builds sample user/note(s) data"""
+        for user in users:
+            try:
+                user.create()
+            except IntegrityError:
+                '''fails with bad or duplicate data'''
+                db.session.remove()
+                print(f"Records exist, duplicate username, or error: {user.uname}")

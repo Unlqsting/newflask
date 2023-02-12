@@ -150,18 +150,20 @@ class Athlete(db.Model):
 
 
 def initAthletes():
-    db.create_all()
-    """Tester data for table"""
-    Liav = Athlete(16, 130, 180, 260, 12, 6.42)
-    Noor = Athlete(17, 190, 240, 380, 15, 7.35)
+    with app.app_context():
+        db.init_app(app)
+        db.create_all()
+        """Tester data for table"""
+        Liav = Athlete(16, 130, 180, 260, 12, 6.42)
+        Noor = Athlete(17, 190, 240, 380, 15, 7.35)
 
 
-    Athletes = [Liav, Noor]
+        Athletes = [Liav, Noor]
 
-    for athlete in Athletes:
-        try:
-            print("h")
-            athlete.create()
-        except IntegrityError:
-            db.session.remove()
-            print(f"Records, exist, duplicate data, or error: {athlete.id}")
+        for athlete in Athletes:
+            try:
+                print("h")
+                athlete.create()
+            except IntegrityError:
+                db.session.remove()
+                print(f"Records, exist, duplicate data, or error: {athlete.id}")
