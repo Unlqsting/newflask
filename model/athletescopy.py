@@ -152,7 +152,7 @@ class Athlete(db.Model):
 def initAthletescopy():
     db.create_all()
     """Tester data for table"""
-    Liav = Athlete(16, 130, 180, 260, 12, 6.42)
+    Liav = Athlete(16, 130, 180, 260, 11, 6.42)
     Noor = Athlete(17, 190, 240, 380, 15, 7.35)
 
 
