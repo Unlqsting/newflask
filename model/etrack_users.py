@@ -72,8 +72,8 @@ class etrack_user(db.Model):
         """only updates values with length"""
         if len(uname) > 0:
             self.uname = uname
-        if len(savedWorkouts) > 0:
-            self.savedWorkouts = savedWorkouts
+        # if len(savedWorkouts) > 0:
+        self.savedWorkouts = savedWorkouts
         db.session.commit()
         return self
 
