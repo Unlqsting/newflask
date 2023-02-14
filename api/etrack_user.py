@@ -4,6 +4,7 @@ from datetime import datetime
 
 from model.etrack_users import etrack_user
 import model.etrack_users
+from __init__ import app, db
 
 
 etrack_user_api = Blueprint('etrack_user_api', __name__,
@@ -49,18 +50,27 @@ class etrack_UserAPI:
 
     class _Update(Resource):
         def patch(self):
+            testUser = etrack_user.query.filter_by(_uname='testUser').first()
+            print(testUser)
             ''' Read data for json body '''
             body = request.get_json()
-            
+            print(body)
             ''' Avoid garbage in, error checking '''
             # validate name
             savedWorkouts = body.get('savedWorkouts')
-            testUser = etrack_user.read(model.etrack_users.u1)
-            if savedWorkouts == testUser.get('savedWorkouts'):
+            print(savedWorkouts)
+            print(testUser._savedWorkouts)
+            # testUser = etrack_user.read(model.etrack_users.u1)
+            if savedWorkouts == testUser._savedWorkouts:
                 return {'message': f'Already exists', 'Workouts':savedWorkouts}
             else:
-                model.etrack_users.u1.update("testUser", savedWorkouts)
-                return jsonify(model.etrack_users.u1.read())
+                print("updating")
+                # testUser._savedWorkouts = savedWorkouts
+                # db.session.commit
+                testUser.update("testUser", savedWorkouts)
+                print(testUser._savedWorkouts)
+                print(testUser.read())
+                return jsonify(testUser.read())
 
                 
 
