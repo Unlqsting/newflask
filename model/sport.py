@@ -7,13 +7,19 @@ from __init__ import app, db
 from sqlalchemy.exc import IntegrityError
 
 class sports(db.Model):
-    __tablename__ = 'sports' 
+    __tablegoal__ = 'sports' 
     _uid = db.Column(db.String(255), primary_key=True)
-    _name = db.Column(db.String(255), unique=False, nullable=False)
+    _goal = db.Column(db.String(255), unique=False, nullable=False)
+    _diff = db.Column(db.String(255), unique=False, nullable=False)
+    _date = db.Column(db.String(255), unique=False, nullable=False)
+    _status = db.Column(db.String(255), unique=False, nullable=False)
 
-    def __init__(self, uid, name):
+    def __init__(self, uid, goal, diff, date, status):
         self. uid = uid
-        self._name = name
+        self._goal = goal
+        self._diff = diff
+        self._date = date
+        self._status = status
 
     @property
     def uid(self):
@@ -24,18 +30,49 @@ class sports(db.Model):
         self. uid = uid
 
     @property
-    def name(self):
-        return self._name
+    def goal(self):
+        return self._goal
 
-    @name.setter
-    def name(self, name):
-        self._name = name
+    @goal.setter
+    def goal(self, goal):
+        self._goal = goal
+        
+    @property
+    def diff(self):
+        return self._diff
+        
+    @diff.setter
+    def diff(self, diff):
+        self._diff = diff
+    
+    @property
+    def date(self):
+        return self._date
+        
+    @date.setter
+    def date(self, date):
+        self._date = date
+        
+    @property
+    def status(self):
+        return self._status
+        
+    @status.setter
+    def status(self, status):
+        self._status = status
+        
+
+
+    
 
     @property
     def dictionary(self):
         dict = {
             "userid" : self.uid,
-            "Name" : self.name,
+            "goal" : self.goal,
+            "diff" : self.diff,
+            "date" : self.date,
+            "status" : self.status
         }
         return dict
 
@@ -54,17 +91,26 @@ class sports(db.Model):
 
     def read(self):
         return {
-            "uid": self.uid,
-            "name": self.name,
+            "userid" : self.uid,
+            "goal" : self.goal,
+            "diff" : self.diff,
+            "date" : self.date,
+            "status" : self.status
         }
 
 
-    def update(self, uid="", name=""):
+    def update(self, uid="", goal="", diff="", status=""):
         """only updates values with length"""
         if len(uid) > 0:
             self.uid = uid
-        if len(name) > 0:
-            self.name = name
+        if len(goal) > 0:
+            self.goal = goal
+        if len(diff) > 0:
+            self.diff = diff
+        if len(status) > 0:
+            self.status = status
+
+        
         db.session.commit()
         return self
 
@@ -80,8 +126,8 @@ def initSports():
         db.init_app(app)
         db.create_all()
         """Tester data for table"""
-        u1 = sports(uid=1 , name = "Jace")
-        u2 = sports(uid=2 , name = "Julien")
+        u1 = sports(uid=1 , goal = "Jace")
+        u2 = sports(uid=2 , goal = "Julien")
 
         users = [u1, u2]
 
@@ -92,5 +138,5 @@ def initSports():
             except IntegrityError:
                 '''fails with bad or duplicate data'''
                 db.session.remove()
-                print(f"Records exist, duplicate username, or error: {user.uid}")
+                print(f"Records exist, duplicate usergoal, or error: {user.uid}")
 
