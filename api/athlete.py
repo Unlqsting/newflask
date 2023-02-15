@@ -16,11 +16,28 @@ class AthleteAPI(Resource):
                 body = request.get_json()
                 
                 Age = body.get('Age')
+                if Age is None or len(Age)< 1:
+                    return {'message': f'Age is missing, or is less than 1 character'}, 400
+                
                 Weight = body.get('Weight')
+                if Weight is None or len(Weight)< 1:
+                    return {'message': f'Weight is missing, or is less than 1 character'}, 400
+                
                 Bench = body.get('Bench')
+                if Bench is None or len(Bench)< 1:
+                    return {'message': f'Bench is missing, or is less than 1 character'}, 400
+                
                 Squat = body.get('Squat')
+                if Squat is None or len(Age)< 1:
+                    return {'message': f'Squat is missing, or is less than 1 character'}, 400
+                
                 Pullup= body.get('Pullup')
+                if Pullup is None or len(Pullup)< 1:
+                    return {'message': f'Pullup is missing, or is less than 1 character'}, 400
+                
                 Mile = body.get('Mile')
+                if Mile is None or len(Mile)< 1:
+                    return {'message': f'Mile is missing, or is less than 1 character'}, 400
 
                 ''' #1: Key code block, setup USER OBJECT '''
                 uo = Athlete(Age, Weight, Bench, Squat, Pullup, Mile)
@@ -59,11 +76,26 @@ class AthleteAPI(Resource):
             json_ready = [ath.read() for ath in athletes]  # prepare output in json
             return jsonify(json_ready)  # jsonify creates Flask response object, more specific to APIs than json.dumps
 
+    class _Security(Resource):
 
+        def post(self):
+            ''' Read data for json body '''
+            body = request.get_json()
+
+            ''' Get Data '''
+            Age = body.get('Age')
+            Weight = body.get('Weight')
+            Bench = body.get('Bench')
+            Squat = body.get('Squat')
+            Pullup = body.get('Pullup')
+            Mile = body.get('Mile')
+
+            return jsonify(Athlete.read())
 
 
     api.add_resource(_Read, "/")
     api.add_resource(_Create, "/create")
+    api.add_resource(_Security, '/authenticate')
 
 
 
