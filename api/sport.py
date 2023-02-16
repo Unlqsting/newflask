@@ -13,19 +13,16 @@ class SportAPI(Resource):
         def post(self):
             try: 
                 "read data"
-                body = request.get_json()
+                body = request.form
                 
-                Uid = body.get('uid')
-                Goal = body.get('goal')
-                Diff = body.get('diff')
-                Date = body.get('date')
-                Status = body.get('status')
+                goal = body.get('goal') 
+                diff = body.get('diff')
                 
-                uo = sports(Uid, Goal, Diff, Date, Status)
+                uo = sports(goal, diff)
                 
-                goal = uo.create()
+                create = uo.create()
                 
-                return jsonify(goal.read())
+                return jsonify(create.read())
             except Exception as e:
                 return {'message':str(e)}
             
