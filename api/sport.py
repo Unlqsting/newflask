@@ -10,7 +10,7 @@ api = Api(sport_api)
 
 class SportAPI(Resource):
     class _Create(Resource):
-        def add(self):
+        def post(self):
             try: 
                 "read data"
                 body = request.get_json()
