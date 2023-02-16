@@ -15,9 +15,9 @@ class SportAPI(Resource):
                 "read data"
                 body = request.get_json()
                 
-                Uid = body.get('Uid')
-                Goal = body.get('Goal')
-                Diff = body.get('Diff')
+                Uid = body.get('uid')
+                Goal = body.get('goal')
+                Diff = body.get('diff')
                 Date = body.get('date')
                 Status = body.get('status')
                 
