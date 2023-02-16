@@ -66,7 +66,7 @@ class Post(db.Model):
 def initPost():
     with app.app_context():
         """Create database and tables"""
-        db.init_app(app)
+        # db.init_app(app)
         db.create_all()
         #! """Tester data for table"""
         # p1 = Post(postTitle='First post', post='This is my first post')
