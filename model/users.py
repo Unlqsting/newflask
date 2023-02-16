@@ -157,7 +157,7 @@ class User(db.Model):
 def initUsers():
     """Create database and tables"""
     with app.app_context():
-        db.init_app(app)
+        # db.init_app(app)
         db.create_all()
         """Tester data for table"""
         Nathan = User(Workout='Chest Fly', Sets='5', Reps='8')
