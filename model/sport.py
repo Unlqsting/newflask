@@ -123,7 +123,7 @@ class sports(db.Model):
 def initSports():
     """Create database and tables"""
     with app.app_context():
-        db.init_app(app)
+        # db.init_app(app)
         db.create_all()
         """Tester data for table"""
         u1 = sports(uid=1 , goal = "Jace")

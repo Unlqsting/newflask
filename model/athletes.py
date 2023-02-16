@@ -151,7 +151,7 @@ class Athlete(db.Model):
 
 def initAthletes():
     with app.app_context():
-        db.init_app(app)
+        # db.init_app(app)
         db.create_all()
         """Tester data for table"""
         Liav = Athlete(16, 130, 180, 260, 12, 6.42)

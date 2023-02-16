@@ -1,4 +1,5 @@
 import threading
+from __init__ import app, db
 from api.athlete import athlete_api 
 
 # import "packages" from flask
@@ -47,6 +48,7 @@ def stub():
 
 @app.before_first_request
 def activate_job():
+    db.init_app(app)
     # initJokes()
     initUsers()
     initAthletes()
