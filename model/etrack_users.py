@@ -86,7 +86,7 @@ class etrack_user(db.Model):
 
 def initEtrackUsers():
     with app.app_context():
-        db.init_app(app)
+        # db.init_app(app)
         db.create_all()
         global u1
         u1 = etrack_user(uname="testUser" , savedWorkouts = {"1 February 2023 workout(s)": ["This is a test"]})

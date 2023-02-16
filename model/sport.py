@@ -81,7 +81,7 @@ class sports(db.Model):
 def initSports():
     """Create database and tables"""
     with app.app_context():
-        db.init_app(app)
+        # db.init_app(app)
         db.create_all()
         
         # ! no need for tester data. Already created.

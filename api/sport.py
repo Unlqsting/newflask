@@ -15,10 +15,6 @@ class SportAPI(Resource):
                 "read data"
                 body = request.form
                 
-                goal = body.get('goal')
-                diff = body.get('diff')
-            
-                
                 uo = sports(goal, diff)
                 
                 goal = uo.create()
