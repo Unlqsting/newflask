@@ -13,15 +13,13 @@ class SportAPI(Resource):
         def post(self):
             try: 
                 "read data"
-                body = request.get_json()
+                body = request.form
                 
-                Uid = body.get('Uid')
-                Goal = body.get('Goal')
-                Diff = body.get('Diff')
-                Date = body.get('date')
-                Status = body.get('status')
+                goal = body.get('goal')
+                diff = body.get('diff')
+            
                 
-                uo = sports(Uid, Goal, Diff, Date, Status)
+                uo = sports(goal, diff)
                 
                 goal = uo.create()
                 

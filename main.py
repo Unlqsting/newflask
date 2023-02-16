@@ -12,6 +12,7 @@ from model.athletes import initAthletes
 from model.sport import initSports
 from model.signups import initSignups
 from model.etrack_users import initEtrackUsers
+from model.forums import initPost
 
 # setup APIs
 # from api.covid import covid_api # Blueprint import api definition
@@ -20,6 +21,8 @@ from api.user import user_api # Blueprint import api definition
 from api.athlete import athlete_api
 from api.signup import signup_api
 from api.etrack_user import etrack_user_api
+from api.forum import forum_api
+from api.sport import sport_api
 # setup App pages
 from projects.projects import app_projects # Blueprint directory import projects definition
 
@@ -29,8 +32,10 @@ from projects.projects import app_projects # Blueprint directory import projects
 app.register_blueprint(user_api) # register api routes
 app.register_blueprint(app_projects) # register app pages
 app.register_blueprint(athlete_api)
+app.register_blueprint(sport_api)
 # app.register_blueprint(signup_api)
 app.register_blueprint(etrack_user_api)
+app.register_blueprint(forum_api)
 
 @app.errorhandler(404)  # catch for URL not found
 def page_not_found(e):
@@ -52,6 +57,8 @@ def activate_job():
     initAthletes()
     # initSignups()
     initEtrackUsers()
+    initPost()
+    initSports()
     
 @app.after_request
 def after_request(response):
