@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_restful import Api, Resource # used for REST API building
 from datetime import datetime
+from flask import Flask, request, redirect
 
 from model.forums import Post
 
@@ -43,7 +44,8 @@ class ForumAPI:
             createPost = uo.create()
             # success returns json of post
             if createPost:
-                return jsonify(createPost.read())
+                redirect_url = 'http://localhost:4002/forum'
+                return redirect(redirect_url)
             # failure returns error
 
     class _Read(Resource):
