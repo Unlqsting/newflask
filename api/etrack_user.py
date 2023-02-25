@@ -10,7 +10,6 @@ from __init__ import app, db
 etrack_user_api = Blueprint('etrack_user_api', __name__,
                    url_prefix='/api/etrack_users')
 
-# API docs https://flask-restful.readthedocs.io/en/latest/api.html
 api = Api(etrack_user_api)
 
 class etrack_UserAPI:        
