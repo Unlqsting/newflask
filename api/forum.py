@@ -95,6 +95,16 @@ class ForumAPI:
                 return {'message': f'post is missing or is less than 12 characters'}, 212
 
             postupd.update(postTitle, post)
+            
+    class _Delete(Resource):
+        def delete(self):
+            ''' Read data for json body '''
+            body = request.get_json()
+            
+            lookId = body.get('id')
+            postdel = Post.query.filter_by(id=lookId).first()
+            
+            postdel.delete()
         
             
         
@@ -106,5 +116,6 @@ class ForumAPI:
     # building RESTapi endpoint
     api.add_resource(_Create, '/create')
     api.add_resource(_Update, '/update')
+    api.add_resource(_Delete, '/delete')
     api.add_resource(_Read, '/')
     
