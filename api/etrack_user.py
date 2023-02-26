@@ -80,9 +80,12 @@ class etrack_UserAPI:
             json_ready = []
             for date in targetDates:
                 print("date is " + date)
-                targetRow = etrack_user.query.filter_by(_date=date).first()
-                targetRow.delete()
-                json_ready.append(targetRow.read())
+                if date is None or len(date) <= 1:
+                    return {'message': f'date is missing, or is invalid otherwise'}, 210
+                else: 
+                    targetRow = etrack_user.query.filter_by(_date=date).first()
+                    targetRow.delete()
+                    json_ready.append(targetRow.read())
             return jsonify(json_ready)
                 
 
