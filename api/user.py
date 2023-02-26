@@ -80,3 +80,16 @@ class UserAPI(Resource):
     api.add_resource(_Read, "/")
     api.add_resource(_Create, "/create")
                 
+class _Delete(Resource):
+    def delete(self):
+        try:
+            # delete all users from the database
+            User.query.delete()
+            db.session.commit()
+            
+            return {'message': 'All data has been deleted'}
+        except Exception as e:
+            db.session.rollback()
+            return {'message': str(e)}
+
+api.add_resource(_Delete, "/delete")
