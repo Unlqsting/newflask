@@ -74,22 +74,15 @@ class UserAPI(Resource):
             json_ready = [uo.read() for uo in users]  # prepare output in json
             return jsonify(json_ready)  # jsonify creates Flask response object, more specific to APIs than json.dumps
 
-
-
+    class _Delete(Resource):
+        def delete(self):
+            try:
+                db.session.query(User).delete()
+                db.session.commit()
+                return {'message': 'All data has been cleared.'}
+            except Exception as e:
+                return {'message': str(e)}, 500
 
     api.add_resource(_Read, "/")
     api.add_resource(_Create, "/create")
-                
-class _Delete(Resource):
-    def delete(self):
-        try:
-            # delete all users from the database
-            User.query.delete()
-            db.session.commit()
-            
-            return {'message': 'All data has been deleted'}
-        except Exception as e:
-            db.session.rollback()
-            return {'message': str(e)}
-
-api.add_resource(_Delete, "/delete")
+    api.add_resource(_Delete, "/delete")
