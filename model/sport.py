@@ -9,9 +9,9 @@ from sqlalchemy.exc import IntegrityError
 class sports(db.Model):
     __tablegoal__ = 'sports' 
     id = db.Column(db.Integer, primary_key=True)
-    _goal = db.Column(db.String(255), unique=False, nullable=False)
-    _diff = db.Column(db.String(255), unique=False, nullable=False)
-    _time = db.Column(db.String(255), unique=False, nullable=False)
+    _goal = db.Column(db.String(255),nullable=False)
+    _diff = db.Column(db.Integer,nullable=False)
+    _time = db.Column(db.String(255),nullable=False)
     
 
     def __init__(self, goal, diff, time):
@@ -81,7 +81,7 @@ class sports(db.Model):
         }
 
 
-    def uptime(self, goal="", diff=""):
+    def uptime(self, goal="", diff="", time=""):
         """only uptimes values with length"""
 
         if len(goal) > 0:
