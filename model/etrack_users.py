@@ -9,20 +9,20 @@ from sqlalchemy.exc import IntegrityError
 class etrack_user(db.Model):
     __tablename__ = 'etrack_users'  # table name is plural, class name is singular
     # Define the User schema with "vars" from object
-    _uname = db.Column(db.String(255), primary_key=True)
+    _date = db.Column(db.String(255), primary_key=True)
     _savedWorkouts = db.Column(db.PickleType, unique=False, nullable=False)
 
-    def __init__(self, uname, savedWorkouts):
-        self._uname = uname
+    def __init__(self, date, savedWorkouts):
+        self._date = date
         self._savedWorkouts = savedWorkouts
 
     @property
-    def uname(self):
-        return self._uname
+    def date(self):
+        return self._date
     
-    @uname.setter
-    def uname(self, uname):
-        self._uname = uname
+    @date.setter
+    def date(self, date):
+        self._date = date
 
     @property
     def savedWorkouts(self):
@@ -35,7 +35,7 @@ class etrack_user(db.Model):
     @property
     def dictionary(self):
         dict = {
-            "username" : self.uname,
+            "date" : self.date,
             "saved workouts" : self.savedWorkouts,
         }
         return dict
@@ -44,7 +44,7 @@ class etrack_user(db.Model):
         return json.dumps(self.dictionary)
     
     def __repr__(self):
-        return f'User(username={self._uname}, password hash={self._savedWorkouts})'
+        return f'etrack_user(date={self._date}, savedWorkouts={self._savedWorkouts})'
 
 
     # CRUD stuff
@@ -62,16 +62,16 @@ class etrack_user(db.Model):
     # returns dictionary
     def read(self):
         return {
-            "uname": self.uname,
+            "date": self.date,
             "savedWorkouts": self.savedWorkouts,
         }
 
     # CRUD update: updates user name, password, phone
     # returns self
-    def update(self, uname, savedWorkouts):
+    def update(self, date, savedWorkouts):
         """only updates values with length"""
-        if len(uname) > 0:
-            self.uname = uname
+        if len(date) > 0:
+            self.date = date
         # if len(savedWorkouts) > 0:
         self.savedWorkouts = savedWorkouts
         db.session.commit()
@@ -88,16 +88,15 @@ def initEtrackUsers():
     with app.app_context():
         # db.init_app(app)
         db.create_all()
-        global u1
-        u1 = etrack_user(uname="testUser" , savedWorkouts = {"1 February 2023 workout(s)": ["This is a test"]})
+        r1 = etrack_user(date="25 February 2023" , savedWorkouts = ["This is a test of the new table"])
 
-        users = [u1]
+        rows = [r1]
 
         """Builds sample user/note(s) data"""
-        for user in users:
+        for row in rows:
             try:
-                user.create()
+                row.create()
             except IntegrityError:
                 '''fails with bad or duplicate data'''
                 db.session.remove()
-                print(f"Records exist, duplicate username, or error: {user.uname}")
+                print(f"Records exist, duplicate username, or error: {row.date}")

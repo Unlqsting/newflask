@@ -9,14 +9,23 @@ from sqlalchemy.exc import IntegrityError
 class sports(db.Model):
     __tablegoal__ = 'sports' 
     id = db.Column(db.Integer, primary_key=True)
-    _goal = db.Column(db.String(255), unique=False, nullable=False)
-    _diff = db.Column(db.String(255), unique=False, nullable=False)
+    _goal = db.Column(db.String(255),nullable=False)
+    _diff = db.Column(db.Integer,nullable=False)
+    _time = db.Column(db.String(255),nullable=False)
     
 
-    def __init__(self, goal, diff):
+    def __init__(self, goal, diff, time):
         
         self._goal = goal
         self._diff = diff
+        self._time = time
+        
+    def __repr__(self):
+        return "<sports(goal='%s', diff='%s', time='%s'>" % (
+            self._goal,
+            self._diff,
+            self._time,
+        )
 
     @property
     def goal(self):
@@ -33,6 +42,14 @@ class sports(db.Model):
     @diff.setter
     def diff(self, diff):
         self._diff = diff
+        
+    @property
+    def time(self):
+        return self._time
+        
+    @time.setter
+    def time(self, time):
+        self._time = time
 
 
     @property
@@ -40,7 +57,9 @@ class sports(db.Model):
         dict = {
             
             "goal" : self.goal,
-            "diff" : self.diff
+            "diff" : self.diff,
+            "time" : self.time
+           
         }
         return dict
 
@@ -58,16 +77,19 @@ class sports(db.Model):
         return {
             "goal" : self.goal,
             "diff" : self.diff,
+            "time" : self.time
         }
 
 
-    def update(self, goal="", diff=""):
-        """only updates values with length"""
+    def uptime(self, goal="", diff="", time=""):
+        """only uptimes values with length"""
 
         if len(goal) > 0:
             self.goal = goal
         if len(diff) > 0:
             self.diff = diff
+        if len(time) > 0:
+            self.time = time
         
         db.session.commit()
         return self

@@ -17,6 +17,7 @@ class SportAPI(Resource):
                 
                 goal = body.get('goal') 
                 diff = body.get('diff')
+                time = body.get('time')
                 
                 uo = sports(goal, diff)
                 
