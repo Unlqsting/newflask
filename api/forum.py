@@ -18,7 +18,7 @@ These object can be used throughout project.
 # Setup of key Flask object (app)
 app = Flask(__name__)
 CORS(app)
-CORS(app, origins=['http://localhost:4002'])
+CORS(app, origins=['https://unlqsting.github.io/tracker/'])
 
 from model.forums import Post
 
@@ -62,7 +62,7 @@ class ForumAPI:
             createPost = uo.create()
             # success returns json of post
             if createPost:
-                redirect_url = 'http://localhost:4002/forum'
+                redirect_url = 'https://unlqsting.github.io/tracker/forum'
                 return redirect(redirect_url)
             # failure returns error
 
