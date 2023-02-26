@@ -10,7 +10,6 @@ from __init__ import app, db
 etrack_user_api = Blueprint('etrack_user_api', __name__,
                    url_prefix='/api/etrack_users')
 
-# API docs https://flask-restful.readthedocs.io/en/latest/api.html
 api = Api(etrack_user_api)
 
 class etrack_UserAPI:        
@@ -21,14 +20,14 @@ class etrack_UserAPI:
             
             ''' Avoid garbage in, error checking '''
             # validate name
-            uname = body.get('uname')
-            if uname is None or len(uname) < 2:
+            date = body.get('date')
+            if date is None or len(date) < 2:
                 return {'message': f'Name is missing, or is less than 2 characters'}, 210
             # validate uid
             
             savedWorkouts = body.get('savedWorkouts')
         
-            uo = etrack_user(uname=uname, 
+            uo = etrack_user(date=date, 
                       savedWorkouts=savedWorkouts)
             
 
@@ -40,7 +39,7 @@ class etrack_UserAPI:
             if user:
                 return jsonify(user.read())
             # failure returns error
-            return {'message': f'Processed {uname}, either a format error or User ID {savedWorkouts} is duplicate'}, 210
+            return {'message': f'Processed {date}, either a format error or User ID {savedWorkouts} is duplicate'}, 210
 
     class _Read(Resource):
         def get(self):
@@ -50,28 +49,44 @@ class etrack_UserAPI:
 
     class _Update(Resource):
         def patch(self):
-            testUser = etrack_user.query.filter_by(_uname='testUser').first()
-            print(testUser)
-            ''' Read data for json body '''
             body = request.get_json()
+            targetDate = body.get('date')
+            targetRow = etrack_user.query.filter_by(_date=targetDate).first()
+            print(targetRow)
+            ''' Read data for json body '''
+
             print(body)
             ''' Avoid garbage in, error checking '''
             # validate name
             savedWorkouts = body.get('savedWorkouts')
             print(savedWorkouts)
-            print(testUser._savedWorkouts)
-            # testUser = etrack_user.read(model.etrack_users.u1)
-            if savedWorkouts == testUser._savedWorkouts:
+            # targetRow = etrack_user.read(model.etrack_users.u1)
+            if savedWorkouts == targetRow._savedWorkouts:
                 return {'message': f'Already exists', 'Workouts':savedWorkouts}
             else:
                 print("updating")
-                # testUser._savedWorkouts = savedWorkouts
+                # targetRow._savedWorkouts = savedWorkouts
                 # db.session.commit
-                testUser.update("testUser", savedWorkouts)
-                print(testUser._savedWorkouts)
-                print(testUser.read())
-                return jsonify(testUser.read())
+                targetRow.update(targetDate, savedWorkouts)
+                print(targetRow._savedWorkouts)
+                print(targetRow.read())
+                return jsonify(targetRow.read())
 
+    class _Delete(Resource):
+        def delete(self):
+            body = request.get_json()
+            targetDates = body.get('targetDates')
+            print(targetDates)
+            json_ready = []
+            for date in targetDates:
+                print("date is " + date)
+                if date is None or len(date) <= 1:
+                    return {'message': f'date is missing, or is invalid otherwise'}, 210
+                else: 
+                    targetRow = etrack_user.query.filter_by(_date=date).first()
+                    targetRow.delete()
+                    json_ready.append(targetRow.read())
+            return jsonify(json_ready)
                 
 
 
@@ -82,3 +97,4 @@ class etrack_UserAPI:
     api.add_resource(_Create, '/create')
     api.add_resource(_Update, '/update')
     api.add_resource(_Read, '/')
+    api.add_resource(_Delete, '/delete')

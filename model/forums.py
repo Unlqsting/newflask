@@ -17,7 +17,7 @@ class Post(db.Model):
 
     # Define the Notes schema
     id = db.Column(db.Integer, primary_key=True)
-    postTitle = db.Column(db.String(255), unique=False, nullable=False)
+    postTitle = db.Column(db.String(255), unique=True, nullable=False)
     post = db.Column(db.String(255), unique=False, nullable=False)
     # Define a relationship in Notes Schema to userID who originates the note, many-to-one (many notes to one user)
 
@@ -52,6 +52,23 @@ class Post(db.Model):
             "postTitle": self.postTitle,
             "post": self.post
         }
+
+    # CRUD update, updates a record in the Notes table
+    def update(self, postTitle="", post=""):
+        """only updates values with length"""
+        if len(postTitle) > 0:
+            self.postTitle = postTitle
+        if len(post) > 0:
+            self.post = post
+        db.session.commit()
+        return self
+
+    # CRUD delete: remove self
+    # None
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+        return None
 
 
 # Define the User class to manage actions in the 'users' table
