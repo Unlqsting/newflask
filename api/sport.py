@@ -32,10 +32,24 @@ class SportAPI(Resource):
             goals = sports.query.all()    # read/extract all users from database
             json_ready = [ath.read() for ath in goals]  # prepare output in json
             return jsonify(json_ready)  # jsonify creates Flask response object, more specific to APIs than json.dumps
+        
+    class _Secure(Resource):
+
+        def post(self):
+            ''' Read data for json body '''
+            body = request.get_json()
+
+            ''' Get Data '''
+            Goal = body.get('goal')
+            Diff = body.get('diff')
+            Time = body.get('time')
+
+            return jsonify(sports.read())
 
 
 
 
     api.add_resource(_Read, "/")
     api.add_resource(_Create, "/create")
+    api.add_resource(_Secure, "/authenticate")
                 
