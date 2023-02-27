@@ -77,10 +77,11 @@ class UserAPI(Resource):
     class _Delete(Resource):
         def delete(self):
             try:
-                db.session.query(User).delete()
+                num_deleted = db.session.query(User).delete()
                 db.session.commit()
-                return {'message': 'All data has been cleared.'}
+                return {'message': f'{num_deleted} rows have been deleted.'}
             except Exception as e:
+                db.session.rollback()
                 return {'message': str(e)}, 500
 
     api.add_resource(_Read, "/")
