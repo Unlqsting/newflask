@@ -13,7 +13,7 @@ class SportAPI(Resource):
         def post(self):
             try: 
                 "read data"
-                body = request.form
+                body = request.get_json()
                 
                 goal = body.get('goal') 
                 diff = body.get('diff')

@@ -15,7 +15,6 @@ class sports(db.Model):
     
 
     def __init__(self, goal, diff, time):
-        
         self._goal = goal
         self._diff = diff
         self._time = time
@@ -24,7 +23,7 @@ class sports(db.Model):
         return "<sports(goal='%s', diff='%s', time='%s'>" % (
             self._goal,
             self._diff,
-            self._time,
+            self._time
         )
 
     @property
