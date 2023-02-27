@@ -244,7 +244,7 @@ class sports(db.Model):
         return None
 
 
-def initUsers():
+def initSports():
     """Create database and tables"""
     with app.app_context():
         # db.init_app(app)
