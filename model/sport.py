@@ -132,8 +132,8 @@ from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash, check_password_hash
 
 # Define the Post class to manage actions in 'posts' table,  with a relationship to 'users' table
-class User(db.Model):
-    __tablename__ = 'posts'
+class sports(db.Model):
+    __tablename__ = 'sports'
 
     # Define the Notes schema
     id = db.Column(db.Integer, primary_key=True)
@@ -244,7 +244,7 @@ class User(db.Model):
         return None
 
 
-def initUsers():
+def initSports():
     """Create database and tables"""
     with app.app_context():
         # db.init_app(app)
