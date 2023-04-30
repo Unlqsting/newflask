@@ -45,6 +45,14 @@ class SportAPI(Resource):
             Time = body.get('time')
 
             return jsonify(sports.read())
+    class _DeleteAll(Resource):
+        def delete(self):
+            try:
+                db.session.query(sports).delete()
+                db.session.commit()
+                return {'message': 'All entries deleted successfully'}
+            except Exception as e:
+                return {'error': str(e)}
 
 
 
@@ -52,4 +60,5 @@ class SportAPI(Resource):
     api.add_resource(_Read, "/")
     api.add_resource(_Create, "/create")
     api.add_resource(_Secure, "/authenticate")
+    api.add_resource(_DeleteAll, "/delete-all")
                 
